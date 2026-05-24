@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Finds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Cormorant Garamond', serif; background: linear-gradient(160deg, #fdf6e3 0%, #fef9f0 60%, #fdf0d5 100%); min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #e2c97e; border-radius: 4px; }
+
+    /* HEADER */
+    .header { background: linear-gradient(135deg, #3d2b00 0%, #6b4c00 100%); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 24px #3d2b0044; flex-wrap: wrap; gap: 10px; }
+    .logo { display: flex; align-items: center; gap: 14px; padding: 16px 0; }
+    .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #c9a84c, #e8c96d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .logo-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: #e8c96d; letter-spacing: 1px; }
+    .logo-sub { color: #c9a84c88; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .nav { display: flex; gap: 4px; flex-wrap: wrap; padding: 8px 0; }
+    .nav-btn { background: transparent; color: #c9a84c; border: 1px solid transparent; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 600; transition: all 0.2s; }
+    .nav-btn:hover { background: #e8c96d22; }
+    .nav-btn.active { background: #e8c96d22; color: #e8c96d; border-color: #e8c96d44; }
+
+    /* MAIN */
+    .main { max-width: 1100px; margin: 0 auto; padding: 28px 16px; }
+
+    /* CARDS */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: #fff; border-radius: 16px; padding: 22px 18px; border: 1.5px solid #e2c97e; box-shadow: 0 2px 12px #c9a84c22; transition: all 0.2s; cursor: default; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px #c9a84c33; }
+    .stat-icon { font-size: 30px; margin-bottom: 8px; }
+    .stat-value { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .stat-label { color: #9a7d2e; font-size: 14px; }
+
+    /* DASHBOARD CARDS */
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width: 600px) { .dash-grid { grid-template-columns: 1fr; } }
+    .dash-card { background: #fff; border-radius: 16px; border: 1.5px solid #e2c97e; padding: 20px; }
+    .dash-card h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: #3d2b00; margin-bottom: 14px; font-weight: 700; }
+    .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f5e6c0; }
+    .dash-row:last-child { border-bottom: none; }
+    .dash-name { font-weight: 600; color: #3d2b00; font-size: 14px; }
+    .dash-sub { color: #9a7d2e; font-size: 12px; margin-top: 2px; }
+
+    /* PAGE HEADER */
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: #3d2b00; }
+    .page-sub { color: #9a7d2e; font-size: 13px; margin-top: 2px; }
+    .page-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* FORM */
+    .form-box { background: #fff; border-radius: 16px; border: 2px solid #e2c97e; padding: 22px; margin-bottom: 20px; box-shadow: 0 4px 24px #c9a84c22; }
+    .form-box h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: #3d2b00; margin-bottom: 16px; font-weight: 700; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media(max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-grid .full { grid-column: span 2; }
+    @media(max-width: 500px) { .form-grid .full { grid-column: span 1; } }
+    input, select { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2c97e; background: #fff9ee; font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #3d2b00; outline: none; }
+    input:focus, select:focus { border-color: #c9a84c; }
+    .form-btns { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    /* BUTTONS */
+    .btn-primary { background: linear-gradient(135deg, #c9a84c, #e8c96d); color: #3d2b00; border: none; border-radius: 10px; padding: 10px 20px; font-weight: 700; font-family: 'Cormorant Garamond', serif; font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px #c9a84c55; transition: opacity 0.2s; white-space: nowrap; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-ghost { background: transparent; color: #9a7d2e; border: 1.5px solid #e2c97e; border-radius: 10px; padding: 9px 16px; font-weight: 600; font-family: 'Cormorant Garamond', serif; font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-ghost:hover { background: #fef3d0; }
+    .btn-edit { background: #3b82f611; color: #3b82f6; border: none; border-radius: 7px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: 'Cormorant Garamond', serif; margin-right: 4px; transition: opacity 0.2s; }
+    .btn-edit:hover { opacity: 0.8; }
+    .btn-del { background: #ef444411; color: #ef4444; border: none; border-radius: 7px; padding: 5px 10px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: 'Cormorant Garamond', serif; transition: opacity 0.2s; }
+    .btn-del:hover { opacity: 0.8; }
+
+    /* TABLE */
+    .table-wrap { background: #fff; border-radius: 16px; border: 1.5px solid #e2c97e; overflow-x: auto; box-shadow: 0 2px 16px #c9a84c15; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    thead tr { background: linear-gradient(135deg, #3d2b00, #6b4c00); }
+    th { padding: 14px 14px; text-align: left; color: #e8c96d; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; white-space: nowrap; }
+    td { padding: 12px 14px; border-bottom: 1px solid #f5e6c0; font-size: 14px; }
+    tbody tr:hover { background: #fef9ee !important; }
+    tbody tr:last-child td { border-bottom: none; }
+    .empty-row td { text-align: center; padding: 32px; color: #9a7d2e; }
+
+    /* STATUS BADGE */
+    .badge { border-radius: 8px; padding: 3px 10px; font-size: 12px; font-weight: 600; display: inline-block; }
+
+    /* SEARCH */
+    .search-input { width: 180px; padding: 9px 14px; border-radius: 10px; border: 1.5px solid #e2c97e; background: #fff9ee; font-family: 'Cormorant Garamond', serif; font-size: 14px; color: #3d2b00; outline: none; }
+    .search-input:focus { border-color: #c9a84c; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: #00000055; display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal-box { background: #fff; border-radius: 18px; padding: 30px; max-width: 340px; width: 90%; border: 2px solid #e2c97e; box-shadow: 0 8px 48px #3d2b0033; text-align: center; }
+    .modal-icon { font-size: 38px; margin-bottom: 10px; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 19px; color: #3d2b00; font-weight: 700; margin-bottom: 8px; }
+    .modal-text { color: #9a7d2e; margin-bottom: 22px; font-size: 14px; }
+    .modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+    /* HIDDEN */
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">✦</div>
+    <div>
+      <div class="logo-title">Fancy Finds</div>
+      <div class="logo-sub">Store Management</div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('dashboard')">🏠 Dashboard</button>
+    <button class="nav-btn" onclick="showTab('orders')">📦 Orders</button>
+    <button class="nav-btn" onclick="showTab('employees')">👥 Employees</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div id="tab-dashboard">
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#3d2b00">Aapka Dashboard</div>
+      <div style="color:#9a7d2e;font-size:14px">Fancy Finds store ka overview</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-value" id="stat-orders" style="color:#3b82f6">0</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" id="stat-revenue" style="color:#22c55e">Rs. 0</div>
+        <div class="stat-label">Total Revenue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value" id="stat-pending" style="color:#f59e0b">0</div>
+        <div class="stat-label">Pending Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="stat-staff" style="color:#8b5cf6">0</div>
+        <div class="stat-label">Active Staff</div>
+      </div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Latest Orders</h3>
+        <div id="dash-orders"></div>
+      </div>
+      <div class="dash-card">
+        <h3>Staff Overview</h3>
+        <div id="dash-employees"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="tab-orders" class="hidden">
+    <div class="page-header">
+      <div>
+        <div class="page-title">📦 Orders</div>
+        <div class="page-sub">Tamam orders yahan manage karein</div>
+      </div>
+      <div class="page-actions">
+        <input class="search-input" type="text" placeholder="Search orders..." oninput="searchOrders(this.value)" id="order-search" />
+        <button class="btn-primary" onclick="toggleOrderForm()">+ Naya Order</button>
+      </div>
+    </div>
+    <div id="order-form" class="form-box hidden">
+      <h3 id="order-form-title">Naya Order Darj Karein</h3>
+      <div class="form-grid">
+        <input type="text" id="o-customer" placeholder="Customer ka naam" />
+        <input type="text" id="o-item" placeholder="Item / Product" />
+        <input type="number" id="o-amount" placeholder="Amount (Rs.)" />
+        <input type="date" id="o-date" />
+        <select id="o-status" class="full">
+          <option>Pending</option>
+          <option>Processing</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+      <div class="form-btns">
+        <button class="btn-primary" onclick="saveOrder()">Save Karein</button>
+        <button class="btn-ghost" onclick="cancelOrderForm()">Raddkaren</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th><th>Customer</th><th>Item</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EMPLOYEES -->
+  <div id="tab-employees" class="hidden">
+    <div class="page-header">
+      <div>
+        <div class="page-title">👥 Employees</div>
+        <div class="page-sub">Staff ki tamam details yahan manage karein</div>
+      </div>
+      <div class="page-actions">
+        <input class="search-input" type="text" placeholder="Search employees..." oninput="searchEmps(this.value)" id="emp-search" />
+        <button class="btn-primary" onclick="toggleEmpForm()">+ Naya Employee</button>
+      </div>
+    </div>
+    <div id="emp-form" class="form-box hidden">
+      <h3 id="emp-form-title">Naya Employee Darj Karein</h3>
+      <div class="form-grid">
+        <input type="text" id="e-name" placeholder="Naam" />
+        <input type="text" id="e-role" placeholder="Role / Designation" />
+        <input type="text" id="e-phone" placeholder="Phone Number" />
+        <input type="number" id="e-salary" placeholder="Monthly Salary (Rs.)" />
+        <select id="e-status" class="full">
+          <option>Active</option>
+          <option>On Leave</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+      <div class="form-btns">
+        <button class="btn-primary" onclick="saveEmp()">Save Karein</button>
+        <button class="btn-ghost" onclick="cancelEmpForm()">Raddkaren</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Naam</th><th>Role</th><th>Phone</th><th>Salary</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="emps-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- DELETE MODAL -->
+<div id="delete-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Delete Karein?</div>
+    <div class="modal-text" id="modal-text">Kya aap wakai delete karna chahte hain?</div>
+    <div class="modal-btns">
+      <button class="btn-primary" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff" onclick="doDelete()">Han, Delete</button>
+      <button class="btn-ghost" onclick="closeModal()">Nahi, Wapas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // DATA
+  let orders = [
+    { id: "FF-001", customer: "Ayesha Khan", item: "Gold Necklace", amount: 4500, status: "Delivered", date: "2026-05-20" },
+    { id: "FF-002", customer: "Sara Ahmed", item: "Diamond Ring", amount: 12000, status: "Pending", date: "2026-05-22" },
+    { id: "FF-003", customer: "Fatima Ali", item: "Pearl Earrings", amount: 2800, status: "Processing", date: "2026-05-23" },
+  ];
+  let employees = [
+    { id: "E-001", name: "Usman Malik", role: "Store Manager", phone: "0300-1234567", salary: 55000, status: "Active" },
+    { id: "E-002", name: "Zara Hussain", role: "Sales Executive", phone: "0321-9876543", salary: 35000, status: "Active" },
+    { id: "E-003", name: "Bilal Raza", role: "Cashier", phone: "0333-4567890", salary: 28000, status: "On Leave" },
+  ];
+  let editOrderId = null, editEmpId = null, deleteTarget = null;
+  let orderSearch = "", empSearch = "";
+
+  const statusColors = {
+    Delivered: "#22c55e", Pending: "#f59e0b", Processing: "#3b82f6",
+    Cancelled: "#ef4444", Active: "#22c55e", "On Leave": "#f59e0b", Inactive: "#ef4444"
+  };
+
+  function badge(status) {
+    const c = statusColors[status] || "#999";
+    return `<span class="badge" style="background:${c}22;color:${c}">${status}</span>`;
+  }
+
+  // TABS
+  function showTab(tab) {
+    ["dashboard","orders","employees"].forEach(t => {
+      document.getElementById("tab-"+t).classList.toggle("hidden", t !== tab);
+    });
+    document.querySelectorAll(".nav-btn").forEach((b,i) => {
+      b.classList.toggle("active", ["dashboard","orders","employees"][i] === tab);
+    });
+    if (tab === "dashboard") renderDashboard();
+    if (tab === "orders") renderOrders();
+    if (tab === "employees") renderEmps();
+    document.getElementById("order-search").value = "";
+    document.getElementById("emp-search").value = "";
+    orderSearch = ""; empSearch = "";
+  }
+
+  // DASHBOARD
+  function renderDashboard() {
+    const revenue = orders.filter(o=>o.status==="Delivered").reduce((s,o)=>s+o.amount,0);
+    const pending = orders.filter(o=>o.status==="Pending").length;
+    const active = employees.filter(e=>e.status==="Active").length;
+    document.getElementById("stat-orders").textContent = orders.length;
+    document.getElementById("stat-revenue").textContent = "Rs. " + revenue.toLocaleString();
+    document.getElementById("stat-pending").textContent = pending;
+    document.getElementById("stat-staff").textContent = active;
+
+    const last3 = [...orders].slice(-3).reverse();
+    document.getElementById("dash-orders").innerHTML = last3.map(o=>`
+      <div class="dash-row">
+        <div><div class="dash-name">${o.customer}</div><div class="dash-sub">${o.item} — ${o.id}</div></div>
+        ${badge(o.status)}
+      </div>`).join("") || "<div style='color:#9a7d2e;font-size:13px;padding:10px 0'>Koi order nahi</div>";
+
+    document.getElementById("dash-employees").innerHTML = employees.map(e=>`
+      <div class="dash-row">
+        <div><div class="dash-name">${e.name}</div><div class="dash-sub">${e.role}</div></div>
+        ${badge(e.status)}
+      </div>`).join("") || "<div style='color:#9a7d2e;font-size:13px;padding:10px 0'>Koi employee nahi</div>";
+  }
+
+  // ORDERS
+  function renderOrders() {
+    const filtered = orders.filter(o =>
+      o.customer.toLowerCase().includes(orderSearch) ||
+      o.item.toLowerCase().includes(orderSearch) ||
+      o.id.toLowerCase().includes(orderSearch)
+    );
+    const tbody = document.getElementById("orders-table");
+    if (!filtered.length) {
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="7">Koi order nahi mila</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = filtered.map((o,i)=>`
+      <tr style="background:${i%2===0?'#fffdf7':'#fff'}">
+        <td style="color:#c9a84c;font-weight:700">${o.id}</td>
+        <td style="color:#3d2b00;font-weight:600">${o.customer}</td>
+        <td style="color:#6b4c00">${o.item}</td>
+        <td style="color:#3d2b00;font-weight:600">Rs. ${o.amount.toLocaleString()}</td>
+        <td style="color:#9a7d2e;font-size:12px">${o.date}</td>
+        <td>${badge(o.status)}</td>
+        <td>
+          <button class="btn-edit" onclick="editOrder('${o.id}')">✏️ Edit</button>
+          <button class="btn-del" onclick="confirmDelete('order','${o.id}')">🗑️</button>
+        </td>
+      </tr>`).join("");
+  }
+
+  function searchOrders(v) { orderSearch = v.toLowerCase(); renderOrders(); }
+
+  function toggleOrderForm() {
+    editOrderId = null;
+    document.getElementById("order-form-title").textContent = "Naya Order Darj Karein";
+    document.querySelectorAll("#order-form input, #order-form select").forEach(el => el.value = "");
+    document.getElementById("o-status").value = "Pending";
+    document.getElementById("order-form").classList.toggle("hidden");
+  }
+
+  function cancelOrderForm() {
+    document.getElementById("order-form").classList.add("hidden");
+    editOrderId = null;
+  }
+
+  function saveOrder() {
+    const c = document.getElementById("o-customer").value.trim();
+    const it = document.getElementById("o-item").value.trim();
+    const am = document.getElementById("o-amount").value.trim();
+    const dt = document.getElementById("o-date").value;
+    const st = document.getElementById("o-status").value;
+    if (!c || !it || !am || !dt) { alert("Sab fields bharein!"); return; }
+    if (editOrderId) {
+      orders = orders.map(o => o.id === editOrderId ? {...o, customer:c, item:it, amount:Number(am), date:dt, status:st} : o);
+      editOrderId = null;
+    } else {
+      const newId = "FF-" + String(orders.length + 1).padStart(3,"0");
+      orders.push({ id:newId, customer:c, item:it, amount:Number(am), date:dt, status:st });
+    }
+    cancelOrderForm();
+    renderOrders();
+  }
+
+  function editOrder(id) {
+    const o = orders.find(x => x.id === id);
+    if (!o) return;
+    editOrderId = id;
+    document.getElementById("order-form-title").textContent = "Order Edit Karein";
+    document.getElementById("o-customer").value = o.customer;
+    document.getElementById("o-item").value = o.item;
+    document.getElementById("o-amount").value = o.amount;
+    document.getElementById("o-date").value = o.date;
+    document.getElementById("o-status").value = o.status;
+    document.getElementById("order-form").classList.remove("hidden");
+    documen
